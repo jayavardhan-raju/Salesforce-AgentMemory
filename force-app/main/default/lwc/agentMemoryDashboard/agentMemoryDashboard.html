@@ -1,0 +1,197 @@
+<template>
+    <lightning-card title="Agent Memory" icon-name="utility:einstein">
+
+        <!-- ── Loading state ─────────────────────────────────────────── -->
+        <template if:true={isLoading}>
+            <div class="slds-align_absolute-center slds-p-around_large">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- ── Error state ───────────────────────────────────────────── -->
+        <template if:true={hasError}>
+            <div class="slds-p-around_medium">
+                <lightning-icon
+                    icon-name="utility:error"
+                    alternative-text="Error"
+                    variant="error"
+                    size="small"
+                    class="slds-m-right_x-small">
+                </lightning-icon>
+                <span class="slds-text-color_error">{errorMessage}</span>
+            </div>
+        </template>
+
+        <!-- ── Main content ───────────────────────────────────────────── -->
+        <template if:false={isLoading}>
+
+            <!-- Memory strength indicator bar -->
+            <template if:true={hasMemory}>
+                <div class="slds-p-horizontal_medium slds-p-top_medium">
+                    <div class="memory-header slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+                        <span class="slds-text-body_small slds-text-color_weak">
+                            Memory Strength
+                        </span>
+                        <span class="slds-badge slds-badge_lightest">
+                            {memoryStrength}% &bull; {patternCount} interactions
+                        </span>
+                    </div>
+                    <div class="strength-track">
+                        <div class="strength-fill" style={strengthBarStyle}></div>
+                    </div>
+                    <div class="slds-m-top_x-small slds-text-body_small slds-text-color_weak">
+                        Cloud: {cloudSource} &bull; Tags: {intentTags}
+                    </div>
+                </div>
+                <div class="slds-m-vertical_x-small slds-m-horizontal_medium divider"></div>
+            </template>
+
+            <!-- Suggestions section header -->
+            <div class="slds-p-horizontal_medium slds-p-top_small slds-grid slds-grid_align-spread">
+                <h3 class="slds-text-heading_small">
+                    Cross-Cloud Suggestions
+                    <template if:true={hasSuggestions}>
+                        <span class="slds-badge slds-badge_inverse slds-m-left_x-small">
+                            {suggestionCount}
+                        </span>
+                    </template>
+                </h3>
+                <lightning-button-icon
+                    icon-name="utility:refresh"
+                    alternative-text="Refresh"
+                    title="Refresh suggestions"
+                    variant="bare"
+                    onclick={handleRefresh}>
+                </lightning-button-icon>
+            </div>
+
+            <!-- No suggestions state -->
+            <template if:false={hasSuggestions}>
+                <div class="slds-illustration slds-illustration_small slds-p-around_medium">
+                    <div class="slds-text-align_center slds-p-vertical_medium">
+                        <lightning-icon
+                            icon-name="utility:check"
+                            alternative-text="All clear"
+                            size="medium"
+                            variant="success"
+                            class="slds-m-bottom_small">
+                        </lightning-icon>
+                        <p class="slds-text-color_weak slds-text-body_small">
+                            No pending suggestions. The agent is monitoring interactions.
+                        </p>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Suggestion cards -->
+            <template if:true={hasSuggestions}>
+                <div class="slds-p-horizontal_medium slds-p-bottom_medium suggestions-list">
+                    <template for:each={suggestions} for:item="suggestion">
+                        <c-agent-suggestion-card
+                            key={suggestion.Id}
+                            suggestion={suggestion}
+                            onaccept={handleAccept}
+                            ondismiss={handleDismiss}>
+                        </c-agent-suggestion-card>
+                    </template>
+                </div>
+            </template>
+
+            <!-- Action history toggle -->
+            <template if:true={hasMemory}>
+                <div class="slds-p-horizontal_medium slds-p-bottom_small">
+                    <a href="javascript:void(0);"
+                       onclick={toggleHistory}
+                       class="slds-text-body_small history-toggle">
+                        <lightning-icon
+                            icon-name={historyIcon}
+                            size="xx-small"
+                            class="slds-m-right_xx-small">
+                        </lightning-icon>
+                        {historyToggleLabel}
+                    </a>
+                </div>
+
+                <!-- Action log table -->
+                <template if:true={showHistory}>
+                    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                        <template if:true={hasHistory}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered history-table">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col"><div class="slds-truncate">Action</div></th>
+                                        <th scope="col"><div class="slds-truncate">Type</div></th>
+                                        <th scope="col"><div class="slds-truncate">Accepted</div></th>
+                                        <th scope="col"><div class="slds-truncate">Date</div></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={actionHistory} for:item="log">
+                                        <tr key={log.Id}>
+                                            <td><div class="slds-truncate" title={log.Action_Name__c}>{log.Action_Name__c}</div></td>
+                                            <td><div class="slds-truncate">{log.Action_Type__c}</div></td>
+                                            <td>
+                                                <template if:true={log.User_Accepted__c}>
+                                                    <lightning-icon icon-name="utility:check" size="xx-small" variant="success"></lightning-icon>
+                                                </template>
+                                                <template if:false={log.User_Accepted__c}>
+                                                    <lightning-icon icon-name="utility:close" size="xx-small" variant="error"></lightning-icon>
+                                                </template>
+                                            </td>
+                                            <td><div class="slds-truncate">{log.CreatedDate}</div></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:false={hasHistory}>
+                            <p class="slds-text-body_small slds-text-color_weak">No action history yet.</p>
+                        </template>
+                    </div>
+                </template>
+            </template>
+
+        </template>
+
+    </lightning-card>
+
+    <!-- Dismiss modal -->
+    <template if:true={showDismissModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-modal="true">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close"
+                        onclick={closeDismissModal}>
+                        <lightning-icon icon-name="utility:close" size="small" alternative-text="Close"></lightning-icon>
+                    </button>
+                    <h2 class="slds-modal__title slds-hyphenate">Dismiss Suggestion</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-textarea
+                        label="Reason for dismissal (optional)"
+                        placeholder="e.g. Account in active escalation, not relevant for this segment..."
+                        value={dismissReason}
+                        onchange={handleDismissReasonChange}
+                        max-length="255">
+                    </lightning-textarea>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button
+                        label="Cancel"
+                        onclick={closeDismissModal}
+                        class="slds-m-right_x-small">
+                    </lightning-button>
+                    <lightning-button
+                        label="Dismiss"
+                        variant="destructive"
+                        onclick={confirmDismiss}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Org_Context_Hash__c</fullName>
+    <caseSensitive>true</caseSensitive>
+    <description>SHA-256 hex digest (64 chars) of entityId|cloudSource|entityType|orgId. Unique external ID enables upsert deduplication.</description>
+    <externalId>true</externalId>
+    <label>Org Context Hash</label>
+    <length>64</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

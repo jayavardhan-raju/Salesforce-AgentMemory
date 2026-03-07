@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Action_Type__c</fullName>
+    <description>Controlled vocabulary for action classification.</description>
+    <label>Action Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Automation_Created</fullName>
+                <default>false</default>
+                <label>Automation Created</label>
+            </value>
+            <value>
+                <fullName>Record_Updated</fullName>
+                <default>false</default>
+                <label>Record Updated</label>
+            </value>
+            <value>
+                <fullName>Suggestion_Accepted</fullName>
+                <default>false</default>
+                <label>Suggestion Accepted</label>
+            </value>
+            <value>
+                <fullName>Suggestion_Dismissed</fullName>
+                <default>false</default>
+                <label>Suggestion Dismissed</label>
+            </value>
+            <value>
+                <fullName>Cross_Cloud_Triggered</fullName>
+                <default>false</default>
+                <label>Cross Cloud Triggered</label>
+            </value>
+            <value>
+                <fullName>Memory_Reinforced</fullName>
+                <default>false</default>
+                <label>Memory Reinforced</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Output_Context__c</fullName>
+    <description>Resulting output/context produced by the agent</description>
+    <inlineHelpText>Captured output produced by the agent for this action</inlineHelpText>
+    <label>Output Context</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

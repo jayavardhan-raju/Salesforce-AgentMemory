@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expiration_Timestamp__c</fullName>
+    <description>Timestamp after which the suggestion is considered expired (created + 72 hours)</description>
+    <inlineHelpText>System-set to 72 hours after creation</inlineHelpText>
+    <label>Expiration Timestamp</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

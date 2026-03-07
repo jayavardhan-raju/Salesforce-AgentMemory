@@ -1,0 +1,51 @@
+<template>
+    <div class={cardClass}>
+
+        <!-- ── Cloud route badge ─────────────────────────────────────── -->
+        <div class="card-header slds-grid slds-grid_align-spread slds-m-bottom_x-small">
+            <div class="cloud-route slds-grid slds-grid_vertical-align-center">
+                <span class={sourceBadgeClass}>{sourceCloud}</span>
+                <lightning-icon
+                    icon-name="utility:forward"
+                    size="xx-small"
+                    class="slds-m-horizontal_xx-small route-arrow">
+                </lightning-icon>
+                <span class={targetBadgeClass}>{targetCloud}</span>
+            </div>
+            <span class="confidence-label slds-text-body_small">{confidenceLabel}</span>
+        </div>
+
+        <!-- ── Confidence bar ────────────────────────────────────────── -->
+        <div class="confidence-track slds-m-bottom_small">
+            <div class="confidence-fill" style={confidenceBarStyle}></div>
+        </div>
+
+        <!-- ── Suggestion body ───────────────────────────────────────── -->
+        <p class="suggestion-body slds-text-body_regular slds-m-bottom_medium">
+            {suggestionBody}
+        </p>
+
+        <!-- ── Expiry notice ─────────────────────────────────────────── -->
+        <p class="expiry-notice slds-text-body_small slds-text-color_weak slds-m-bottom_small">
+            Expires: {expiresAt}
+        </p>
+
+        <!-- ── Action buttons ────────────────────────────────────────── -->
+        <div class="card-actions slds-grid slds-grid_align-end slds-gutters_xx-small">
+            <lightning-button
+                label="Dismiss"
+                variant="neutral"
+                icon-name="utility:close"
+                onclick={handleDismiss}
+                class="slds-m-right_x-small">
+            </lightning-button>
+            <lightning-button
+                label="Accept"
+                variant="success"
+                icon-name="utility:check"
+                onclick={handleAccept}>
+            </lightning-button>
+        </div>
+
+    </div>
+</template>

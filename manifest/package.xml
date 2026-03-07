@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <version>66.0</version>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Apex Classes (9 classes)                                        -->
+    <!-- Deploy order enforced by Salesforce compile graph:              -->
+    <!--   AgentActionLogDTO → AgentMemorySelector →                     -->
+    <!--   AgentMemoryService → AgentMemoryTriggerHandler →              -->
+    <!--   CrossCloudAnalysisQueueable → FlowExecutionQueueable →        -->
+    <!--   MemoryStrengthDecayBatch → AgentMemoryController →            -->
+    <!--   AgentMemoryServiceTest                                        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <types>
+        <members>AgentActionLogDTO</members>
+        <members>AgentMemorySelector</members>
+        <members>AgentMemoryService</members>
+        <members>AgentMemoryTriggerHandler</members>
+        <members>CrossCloudAnalysisQueueable</members>
+        <members>FlowExecutionQueueable</members>
+        <members>MemoryStrengthDecayBatch</members>
+        <members>AgentMemoryController</members>
+        <members>AgentMemoryServiceTest</members>
+        <name>ApexClass</name>
+    </types>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Apex Trigger (1 trigger)                                        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <types>
+        <members>AgentMemoryTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Custom Objects (3 objects — deploy Agent_Memory__c first as     -->
+    <!-- the other two look up to it; Salesforce resolves dep order)     -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <types>
+        <members>Agent_Memory__c</members>
+        <members>Agent_Action_Log__c</members>
+        <members>Agent_Suggestion__c</members>
+        <name>CustomObject</name>
+    </types>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Permission Set (1 permission set)                               -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <types>
+        <members>AgentMemory_Access</members>
+        <name>PermissionSet</name>
+    </types>
+
+    <types>
+        <members>agentMemoryDashboard</members>
+        <members>agentSuggestionCard</members>
+        <name>LightningComponentBundle</name>
+    </types>
+
+</Package>

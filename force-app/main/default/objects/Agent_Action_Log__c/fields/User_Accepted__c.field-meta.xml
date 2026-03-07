@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User_Accepted__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>True when the action was explicitly accepted by the user. False for dismissals or system actions.</description>
+    <label>User Accepted</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

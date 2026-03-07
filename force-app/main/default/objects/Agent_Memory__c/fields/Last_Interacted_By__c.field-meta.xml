@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Interacted_By__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the User who triggered the most recent memory write.</description>
+    <label>Last Interacted By</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Agent Memories</relationshipLabel>
+    <relationshipName>Agent_Memories</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Memory_Strength__c</fullName>
+    <defaultValue>50</defaultValue>
+    <description>Core intelligence score. Range 0-100. Created at 50. +10 on each reinforcement (capped at 100). -5 on dismissal. -5 nightly via batch for stale memories.</description>
+    <externalId>false</externalId>
+    <label>Memory Strength</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

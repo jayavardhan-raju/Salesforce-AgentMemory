@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Action_Timestamp__c</fullName>
+    <description>When the agent action occurred</description>
+    <inlineHelpText>Timestamp of the action</inlineHelpText>
+    <label>Action Timestamp</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

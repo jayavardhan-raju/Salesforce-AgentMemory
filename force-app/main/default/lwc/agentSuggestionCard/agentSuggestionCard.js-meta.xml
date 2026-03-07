@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>false</isExposed>
+    <description>Child card component used by agentMemoryDashboard. Renders a single Agent_Suggestion__c with confidence bar, cloud route badges, and Accept/Dismiss actions. Not exposed directly to record pages.</description>
+</LightningComponentBundle>

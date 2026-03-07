@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pattern_Count__c</fullName>
+    <defaultValue>1</defaultValue>
+    <description>Integer counter incremented by 1 on every call to reinforceMemory(). Feeds confidence formula.</description>
+    <externalId>false</externalId>
+    <label>Pattern Count</label>
+    <precision>6</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>
