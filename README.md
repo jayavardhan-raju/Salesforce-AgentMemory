@@ -320,14 +320,47 @@ Salesforce-AgentMemory/
 4. Push to the branch (`git push origin feature/my-feature`)
 5. Open a Pull Request
 
----
+## Documentation
+Full documentation is available at jayavardhan-raju.github.io/Salesforce-AgentMemory
+SectionDescriptionArchitecture OverviewLayered design, data flow, security modelData ModelCustom objects, fields, relationshipsConfidence EngineScoring formula, thresholds, tuning parametersAPI ReferenceApexDox-style class documentationLWC ComponentsLightning Web Component referenceSetup GuideDeployment, configuration, schedulingTestingTest suite and coverage targets
+
+## Deep Dive Blog Series
+For detailed walkthroughs of each cross-cloud scenario with real Apex code and confidence calculations:
+
+Sales Cloud · The Ghost Deal Problem — How memory replaces middleware when a $500K deal closes
+Service Cloud · The Compounding Signal — Detecting upsell signals hidden in support queues
+Marketing Cloud · The Silent Buyer — Behavioral fingerprinting without form fills
+
+
+## Tech Stack
+
+Apex — Service layer, triggers, batch processing, queueable async
+Lightning Web Components — Dashboard, suggestion cards, action history
+Custom Objects — Agent_Memory__c, Agent_Suggestion__c, Agent_Action_Log__c
+Security — with sharing, Security.stripInaccessible(), CRUD/FLS checks, permission set
+
+
+## Citing This Project
+If you use AgentMemory in your research, architecture, or implementation, please cite it. See CITING.md for detailed citation formats.
+GitHub provides a "Cite this repository" button in the sidebar (powered by the CITATION.cff file in this repo).
+Quick BibTeX:
+bibtex@software{raju2026agentmemory,
+  author    = {Raju, Jayavardhan},
+  title     = {Salesforce AgentMemory: Cross-Cloud Contextual Memory Framework},
+  year      = {2026},
+  url       = {https://github.com/jayavardhan-raju/Salesforce-AgentMemory},
+  note      = {Platform-native Apex framework with self-tuning confidence engine}
+}
+
+## Contributing
+Contributions are welcome. Please open an issue first to discuss what you'd like to change. All pull requests should include appropriate test coverage.
 
 ## License
-
-This project is open source. See the repository for license details.
-
----
+This project is licensed under the MIT License — see the LICENSE file for details.
 
 ## Author
+Jayavardhan Raju — Salesforce Architect & AI Insights
 
-**Jayavardhan Raju** — [GitHub](https://github.com/jayavardhan-raju)
+Blog: jayraju.com
+GitHub: @jayavardhan-raju
+Documentation: jayavardhan-raju.github.io/Salesforce-AgentMemory
