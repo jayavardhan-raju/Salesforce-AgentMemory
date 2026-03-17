@@ -1,0 +1,53 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Salesforce AgentMemory: Cross-Cloud Contextual Memory Framework"
+abstract: >-
+  A platform-native Apex framework that enables Sales Cloud, Service Cloud,
+  and Marketing Cloud to learn from each other with zero middleware, zero
+  hardcoded integrations, and a self-tuning confidence engine. The system
+  observes agent actions, learns from repeated patterns, generates cross-cloud
+  suggestions with transparent confidence scores, and adapts through user
+  feedback — all within the Salesforce platform.
+authors:
+  - family-names: "Raju"
+    given-names: "Jayavardhan"
+    alias: "jayavardhan-raju"
+version: "1.0.0"
+date-released: "2026-02-23"
+license: MIT
+repository-code: "https://github.com/jayavardhan-raju/Salesforce-AgentMemory"
+url: "https://jayavardhan-raju.github.io/Salesforce-AgentMemory/"
+keywords:
+  - salesforce
+  - apex
+  - cross-cloud
+  - agent-memory
+  - confidence-engine
+  - sales-cloud
+  - service-cloud
+  - marketing-cloud
+  - enterprise-architecture
+  - lightning-web-components
+references:
+  - type: article
+    title: "Sales Cloud · Deep Dive: The Ghost Deal Problem"
+    authors:
+      - family-names: "Raju"
+        given-names: "Jayavardhan"
+    url: "https://www.jayraju.com/?post=5"
+    date-published: "2026-02-23"
+  - type: article
+    title: "Service Cloud · Deep Dive: The Compounding Signal"
+    authors:
+      - family-names: "Raju"
+        given-names: "Jayavardhan"
+    url: "https://www.jayraju.com/?post=6"
+    date-published: "2026-01-24"
+  - type: article
+    title: "Marketing Cloud · Deep Dive: The Silent Buyer"
+    authors:
+      - family-names: "Raju"
+        given-names: "Jayavardhan"
+    url: "https://www.jayraju.com/?post=12"
+    date-published: "2026-02-24"
