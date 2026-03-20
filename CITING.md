@@ -104,10 +104,8 @@ If you reference specific cross-cloud scenarios or the confidence engine design,
 ---
 
 ## DOI (Digital Object Identifier)
-
-A persistent DOI for this project will be available via [Zenodo](https://zenodo.org) once a GitHub Release is published. DOIs provide a permanent, citable reference that is recognized in academic and professional contexts.
-
-*To register a DOI: Link this repository to Zenodo at [zenodo.org/account/settings/github](https://zenodo.org/account/settings/github/), then create a GitHub Release (e.g., `v1.0.0`). Zenodo will automatically mint a DOI.*
+https://doi.org/10.5281/zenodo.19126107
+A persistent DOI for this project is available via https://doi.org/10.5281/zenodo.19126107 after the GitHub Release is published. DOIs provide a permanent, citable reference that is recognized in academic and professional contexts.
 
 ---
 
