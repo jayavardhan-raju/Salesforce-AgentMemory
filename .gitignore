@@ -1,2 +1,5 @@
 .sf
 .sfdx
+# Cloudflare Wrangler local cache
+.wrangler/
+broker/cloudflare-worker/.wrangler/
