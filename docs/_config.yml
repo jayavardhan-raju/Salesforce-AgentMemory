@@ -43,6 +43,12 @@ kramdown:
     block:
       line_numbers: false
 
+# Keep the launch form's client script in the build.
+# (Jekyll matches exclude globs against the full relative path, so a bare
+# "*.js" also drops assets/live-demo.js. Force-include the assets folder.)
+include:
+  - assets
+
 # Exclude files
 exclude:
   - node_modules/
@@ -50,7 +56,5 @@ exclude:
   - config/
   - scripts/
   - manifest/
-  - "*.json"
-  - "*.js"
   - .husky/
   - .vscode/
