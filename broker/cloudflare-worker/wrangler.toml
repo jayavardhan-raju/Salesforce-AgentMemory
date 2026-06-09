@@ -1,0 +1,14 @@
+name = "salesforce-agentmemory-auth-broker"
+main = "src/index.mjs"
+compatibility_date = "2026-06-02"
+
+[vars]
+GITHUB_OWNER = "jayavardhan-raju"
+GITHUB_REPO = "Salesforce-AgentMemory"
+CORS_ORIGIN = "https://jayavardhan-raju.github.io"
+TTL_SECONDS = "900"
+
+[[kv_namespaces]]
+binding = "AUTH_TOKENS"
+# Replace with the id returned by: wrangler kv namespace create AUTH_TOKENS
+id = "1b10655e8f6646f88e581f266d014e7d"
