@@ -39,6 +39,44 @@
   margin-top: 1rem;
 }
 
+.live-demo-hint {
+  font-weight: 400;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: #57606a;
+}
+
+.live-demo-hint a {
+  color: #0969da;
+}
+
+.live-demo-hint code {
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  background: #eaeef2;
+  font-size: 0.85em;
+}
+
+.live-demo-commands {
+  margin: 0.1rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.live-demo-commands code {
+  display: block;
+  white-space: pre;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #24292f;
+  background: none;
+  padding: 0;
+}
+
 .live-demo-radio-group {
   display: grid;
   gap: 0.35rem;
