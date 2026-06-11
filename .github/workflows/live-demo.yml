@@ -25,17 +25,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Prepare artifact directory
-        run: mkdir -p "$ARTIFACT_DIR"
+        run: mkdir -p "$ARTIFACT_DIR/screenshots"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
+      - name: Install system demo tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Install Salesforce CLI and demo tooling
         run: |
           npm install --global @salesforce/cli
-          npm install --no-save --no-package-lock --omit=dev nodemailer
+          npm install --no-save --no-package-lock --omit=dev playwright nodemailer
+          npx --no-install playwright install --with-deps chromium
 
       - name: Verify requester fork
         env:
@@ -94,8 +100,20 @@ jobs:
       - name: Execute demo scenarios and Apex tests
         # Runs the three TC demo scripts and the AgentMemoryServiceTest suite with
         # code coverage. The runner records honest pass/fail + coverage rather than
-        # halting, so the requester email always reflects the real outcome.
+        # halting, so the requester email always reflects the real outcome. This
+        # also seeds the Accounts/Contacts the UI walkthrough films.
         run: node scripts/live-demo/run-apex-scenarios.mjs --target-org "$SCRATCH_ALIAS" --artifacts "$ARTIFACT_DIR"
+
+      - name: Run Salesforce UI walkthrough (Playwright)
+        # Opens each seeded record's Agent Memory dashboard, accepts the top
+        # suggestion, and screenshots each step. Best-effort: a slow page or a
+        # selector change must not block the GIF, artifacts, or the email.
+        continue-on-error: true
+        run: node scripts/live-demo/run-salesforce-ui-scenarios.mjs --target-org "$SCRATCH_ALIAS" --artifacts "$ARTIFACT_DIR"
+
+      - name: Create consolidated demo GIF
+        if: always()
+        run: node scripts/live-demo/create-gif.mjs "$ARTIFACT_DIR/screenshots" "$ARTIFACT_DIR/agentmemory-demo.gif"
 
       - name: Upload live demo artifacts
         if: always()

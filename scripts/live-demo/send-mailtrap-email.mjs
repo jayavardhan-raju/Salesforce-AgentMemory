@@ -57,6 +57,8 @@ const subject = success
   ? "Salesforce AgentMemory demo org is ready"
   : "Salesforce AgentMemory demo setup needs attention";
 
+const hasGif = existsSync(`${values.artifacts}/agentmemory-demo.gif`);
+
 const context = {
   payload,
   credentials,
@@ -65,6 +67,7 @@ const context = {
   runUrl,
   artifactUrl,
   success,
+  hasGif,
   durationDays: values["duration-days"],
 };
 const text = buildText(context);
@@ -120,6 +123,7 @@ function buildText({
   runUrl,
   artifactUrl,
   success,
+  hasGif,
   durationDays,
 }) {
   const lines = [
@@ -164,6 +168,13 @@ function buildText({
     );
   }
 
+  if (hasGif) {
+    lines.push(
+      "A short GIF walkthrough of the dashboard scenarios (open record, view suggestions, accept) is attached: agentmemory-demo.gif.",
+      "",
+    );
+  }
+
   lines.push(
     "Next steps: log in, then assign the permission set and open an Account record with the AgentMemory dashboard.",
     `Artifacts: ${artifactUrl}`,
@@ -185,6 +196,7 @@ function buildHtml({
   runUrl,
   artifactUrl,
   success,
+  hasGif,
   durationDays,
 }) {
   const credentialRows = credentials
@@ -232,6 +244,7 @@ function buildHtml({
     ${credentialRows}
     ${scenarios}
     ${scratchMode}
+    ${hasGif ? "<p>A short <strong>GIF walkthrough</strong> of the dashboard scenarios (open record, view suggestions, accept) is attached as <code>agentmemory-demo.gif</code>.</p>" : ""}
     <p><a href="${escapeHtml(artifactUrl)}">Open the uploaded artifacts</a></p>
     <p><a href="${escapeHtml(runUrl)}">Open the GitHub Actions run log</a></p>
     <p>
@@ -243,18 +256,27 @@ function buildHtml({
 }
 
 async function buildAttachments(artifactDir) {
-  const resultsPath = `${artifactDir}/scenario-results.json`;
-  if (!existsSync(resultsPath)) {
-    return [];
+  const attachments = [];
+
+  const gifPath = `${artifactDir}/agentmemory-demo.gif`;
+  if (existsSync(gifPath)) {
+    attachments.push({
+      filename: basename(gifPath),
+      path: gifPath,
+      contentType: "image/gif",
+    });
   }
 
-  return [
-    {
+  const resultsPath = `${artifactDir}/scenario-results.json`;
+  if (existsSync(resultsPath)) {
+    attachments.push({
       filename: basename(resultsPath),
       path: resultsPath,
       contentType: "application/json",
-    },
-  ];
+    });
+  }
+
+  return attachments;
 }
 
 function escapeHtml(value) {
