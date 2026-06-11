@@ -89,12 +89,6 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>c:agentMemoryDashboard</componentName>
-                <identifier>c_agentMemoryDashboard_main</identifier>
-            </componentInstance>
-        </itemInstances>
-        <itemInstances>
-            <componentInstance>
                 <componentInstanceProperties>
                     <name>label</name>
                     <value>Tabs</value>
@@ -112,6 +106,12 @@
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
+        <itemInstances>
+            <componentInstance>
+                <componentName>c:agentMemoryDashboard</componentName>
+                <identifier>c_agentMemoryDashboard_sidebar</identifier>
+            </componentInstance>
+        </itemInstances>
         <mode>Replace</mode>
         <name>sidebar</name>
         <type>Region</type>

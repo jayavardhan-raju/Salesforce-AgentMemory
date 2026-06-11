@@ -1,6 +1,6 @@
 import { parseArgs } from "node:util";
 
-import { ensureDir, getOrgOpenUrl, querySalesforce, writeJsonFile } from "./lib.mjs";
+import { ensureDir, getOrgOpenUrl, querySalesforce, sfJson, writeJsonFile } from "./lib.mjs";
 
 // AgentMemory's UI demo is the Agent Memory dashboard LWC on a record page.
 // The TC1-TC3 Apex scenarios seed Accounts/Contacts that carry pending
@@ -26,6 +26,8 @@ if (!values["target-org"] || !values.artifacts) {
 const targetOrg = values["target-org"];
 const artifactDir = values.artifacts;
 await ensureDir(`${artifactDir}/screenshots`);
+
+const instanceUrl = await getInstanceUrl(targetOrg);
 
 let entities = [];
 try {
@@ -81,9 +83,28 @@ async function discoverEntities(org) {
 
   for (const entity of discovered) {
     entity.name = await resolveName(org, entity);
+    entity.record_url = recordUrl(entity);
   }
 
   return discovered;
+}
+
+async function getInstanceUrl(org) {
+  try {
+    const output = await sfJson(["org", "display", "--target-org", org, "--json"]);
+    return output.result?.instanceUrl || "";
+  } catch {
+    return "";
+  }
+}
+
+function recordUrl(entity) {
+  // App-scoped URL so the requester lands on the AgentMemory Demo app, where the
+  // action override makes the dashboard the active record page.
+  if (!instanceUrl) {
+    return "";
+  }
+  return `${instanceUrl}/lightning/app/${APP_API_NAME}/r/${entity.object}/${entity.id}/view`;
 }
 
 function objectFromId(id) {
@@ -113,6 +134,7 @@ async function runScenario(page, entity, position) {
     entity_id: entity.id,
     object: entity.object,
     name: entity.name,
+    record_url: entity.record_url || "",
     status: "failed",
     accepted: false,
     screenshots: [],
@@ -121,7 +143,10 @@ async function runScenario(page, entity, position) {
   try {
     const dashboardFound = await openRecord(page, entity);
     result.dashboard_rendered = dashboardFound;
-    await screenshot(page, result, `${prefix}-01-${slug(entity.name)}-dashboard.png`);
+    // Full record page for context (dashboard sits in the right sidebar, top).
+    await screenshot(page, result, `${prefix}-01-${slug(entity.name)}-record.png`);
+    // Close-up of the dashboard so it reads clearly in the GIF.
+    await screenshotDashboard(page, result, `${prefix}-02-${slug(entity.name)}-dashboard.png`);
 
     // The manual step: accept the highest-confidence suggestion.
     const accept = page.getByRole("button", { name: "Accept", exact: true }).first();
@@ -129,7 +154,7 @@ async function runScenario(page, entity, position) {
       await accept.click({ timeout: 15000 }).catch(() => {});
       await page.waitForTimeout(6000);
       result.accepted = true;
-      await screenshot(page, result, `${prefix}-02-${slug(entity.name)}-after-accept.png`);
+      await screenshotDashboard(page, result, `${prefix}-03-${slug(entity.name)}-after-accept.png`);
     }
 
     // Reveal the action history for a richer final frame.
@@ -137,7 +162,7 @@ async function runScenario(page, entity, position) {
     if (await history.count()) {
       await history.click({ timeout: 10000 }).catch(() => {});
       await page.waitForTimeout(2500);
-      await screenshot(page, result, `${prefix}-03-${slug(entity.name)}-history.png`);
+      await screenshotDashboard(page, result, `${prefix}-04-${slug(entity.name)}-history.png`);
     }
 
     result.status = result.screenshots.length > 0 ? "passed" : "failed";
@@ -183,6 +208,24 @@ async function screenshot(page, result, fileName) {
   result.screenshots.push(path);
 }
 
+async function screenshotDashboard(page, result, fileName) {
+  const path = `${artifactDir}/screenshots/${fileName}`;
+  const dashboard = page.locator("c-agent-memory-dashboard").first();
+  try {
+    if (await dashboard.count()) {
+      await dashboard.scrollIntoViewIfNeeded({ timeout: 5000 }).catch(() => {});
+      await page.waitForTimeout(800);
+      await dashboard.screenshot({ path });
+      result.screenshots.push(path);
+      return;
+    }
+  } catch {
+    // Fall through to a full-page capture if the element screenshot fails.
+  }
+  await page.screenshot({ path, fullPage: true });
+  result.screenshots.push(path);
+}
+
 function slug(value) {
   return (
     String(value)
@@ -198,8 +241,15 @@ async function writeResults(scenarios) {
   await writeJsonFile(`${artifactDir}/ui-scenario-results.json`, {
     target_org: targetOrg,
     generated_at: new Date().toISOString(),
+    instance_url: instanceUrl,
     passed,
     failed: scenarios.length - passed,
+    record_links: entities.map((entity) => ({
+      object: entity.object,
+      name: entity.name,
+      id: entity.id,
+      url: entity.record_url || "",
+    })),
     scenarios,
   });
 }
