@@ -92,6 +92,8 @@
                 <componentName>c:agentMemoryDashboard</componentName>
                 <identifier>c_agentMemoryDashboard_main</identifier>
             </componentInstance>
+        </itemInstances>
+        <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
                     <name>label</name>
