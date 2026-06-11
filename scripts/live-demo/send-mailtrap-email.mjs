@@ -48,6 +48,10 @@ const scenarioResults = existsSync(`${values.artifacts}/scenario-results.json`)
 const scratchSelection = existsSync(`${values.artifacts}/scratch-org-selection.json`)
   ? await readJsonFile(`${values.artifacts}/scratch-org-selection.json`)
   : null;
+const uiResults = existsSync(`${values.artifacts}/ui-scenario-results.json`)
+  ? await readJsonFile(`${values.artifacts}/ui-scenario-results.json`)
+  : null;
+const recordLinks = (uiResults?.record_links || []).filter((link) => link.url);
 
 const runUrl = githubRunUrl();
 const artifactUrl = process.env.ARTIFACT_URL || runUrl;
@@ -64,6 +68,7 @@ const context = {
   credentials,
   scenarioResults,
   scratchSelection,
+  recordLinks,
   runUrl,
   artifactUrl,
   success,
@@ -120,6 +125,7 @@ function buildText({
   credentials,
   scenarioResults,
   scratchSelection,
+  recordLinks,
   runUrl,
   artifactUrl,
   success,
@@ -168,6 +174,14 @@ function buildText({
     );
   }
 
+  if (recordLinks && recordLinks.length > 0) {
+    lines.push("Demo records (log in first, then open these to see the Agent Memory dashboard):");
+    for (const link of recordLinks) {
+      lines.push(`  - ${link.object} — ${link.name}: ${link.url}`);
+    }
+    lines.push("");
+  }
+
   if (hasGif) {
     lines.push(
       "A short GIF walkthrough of the dashboard scenarios (open record, view suggestions, accept) is attached: agentmemory-demo.gif.",
@@ -193,6 +207,7 @@ function buildHtml({
   credentials,
   scenarioResults,
   scratchSelection,
+  recordLinks,
   runUrl,
   artifactUrl,
   success,
@@ -234,6 +249,19 @@ function buildHtml({
       }</p>`
     : "";
 
+  const demoRecords =
+    recordLinks && recordLinks.length > 0
+      ? `
+      <h2>Demo Records</h2>
+      <p>Log in first, then open any record below to see the Agent Memory dashboard (top of the right sidebar):</p>
+      <ul>${recordLinks
+        .map(
+          (link) =>
+            `<li>${escapeHtml(link.object)} — <a href="${escapeHtml(link.url)}">${escapeHtml(link.name)}</a></li>`,
+        )
+        .join("")}</ul>`
+      : "";
+
   return `
     <p>Hi ${escapeHtml(payload.name)},</p>
     <p>${
@@ -243,6 +271,7 @@ function buildHtml({
     }</p>
     ${credentialRows}
     ${scenarios}
+    ${demoRecords}
     ${scratchMode}
     ${hasGif ? "<p>A short <strong>GIF walkthrough</strong> of the dashboard scenarios (open record, view suggestions, accept) is attached as <code>agentmemory-demo.gif</code>.</p>" : ""}
     <p><a href="${escapeHtml(artifactUrl)}">Open the uploaded artifacts</a></p>
