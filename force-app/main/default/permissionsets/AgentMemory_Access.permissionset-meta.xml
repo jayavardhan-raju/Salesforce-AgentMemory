@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Agent Memory system access: objects, fields, and LWC. Universally-required fields (e.g. Action_Name__c, Entity_Type__c) are omitted because FLS cannot be set on required fields; they are implicitly visible. Suggestion_Body__c is included so Execute Anonymous (which enforces the running user's FLS) can read/write it.</description>
+    <description>Agent Memory system access: objects, fields, and LWC. Includes FLS for Suggestion_Body__c so Execute Anonymous can read/write it. Required fields (Action_Name__c, Entity_Type__c) are omitted since FLS cannot be set on required fields.</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Agent_Action_Log__c.Action_Type__c</field>
