@@ -17,14 +17,25 @@ if (!token) {
   throw new Error("GITHUB_TOKEN is required to verify the requester fork");
 }
 
-const response = await fetch(`https://api.github.com/repos/${fork.owner}/${fork.repo}`, {
-  headers: {
-    accept: "application/vnd.github+json",
-    authorization: `Bearer ${token}`,
-    "user-agent": "salesforce-agentmemory-live-demo",
-    "x-github-api-version": "2022-11-28",
-  },
-});
+// Bound the GitHub API call with a timeout. Node's fetch (undici) uses unref'd
+// sockets, so a stalled top-level `await fetch()` can let the event loop drain
+// with the await still pending -> Node exits 13 ("unsettled top-level await").
+// An explicit AbortSignal guarantees this promise settles.
+let response;
+try {
+  response = await fetch(`https://api.github.com/repos/${fork.owner}/${fork.repo}`, {
+    headers: {
+      accept: "application/vnd.github+json",
+      authorization: `Bearer ${token}`,
+      "user-agent": "salesforce-agentmemory-live-demo",
+      "x-github-api-version": "2022-11-28",
+    },
+    signal: AbortSignal.timeout(30000),
+  });
+} catch (error) {
+  const reason = error?.name === "TimeoutError" ? "timed out after 30s" : "network error";
+  throw new Error(`GitHub fork verification request for ${fork.fullName} failed (${reason}): ${error?.message || error}`);
+}
 
 if (!response.ok) {
   throw new Error(`Unable to read fork metadata for ${fork.fullName}: HTTP ${response.status}`);
