@@ -33,6 +33,16 @@ if (files.length === 0) {
 const frameDir = join(tmpdir(), `agentmemory-gif-${Date.now()}`);
 await mkdir(frameDir, { recursive: true });
 
+// Verify ffmpeg availability early so we fail fast and log a clear message.
+try {
+  // run() is declared later as a function declaration and is hoisted.
+  await run("ffmpeg", ["-version"]);
+} catch (err) {
+  console.warn("ffmpeg is not available or not executable; skipping GIF generation");
+  await rm(frameDir, { recursive: true, force: true });
+  process.exit(0);
+}
+
 try {
   for (const [index, file] of files.entries()) {
     await copyFile(file, join(frameDir, `frame-${String(index + 1).padStart(4, "0")}.png`));

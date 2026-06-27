@@ -36,6 +36,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+          # Verify ffmpeg is installed and executable (helps diagnose CI failures earlier)
+          ffmpeg -version || true
 
       - name: Install Salesforce CLI and demo tooling
         run: |
@@ -113,7 +115,13 @@ jobs:
 
       - name: Create consolidated demo GIF
         if: always()
-        run: node scripts/live-demo/create-gif.mjs "$ARTIFACT_DIR/screenshots" "$ARTIFACT_DIR/agentmemory-demo.gif"
+        run: |
+          # If there are no screenshots, skip GIF creation early to avoid running ffmpeg on empty input.
+          if [ ! -d "$ARTIFACT_DIR/screenshots" ] || [ -z "$(ls -A "$ARTIFACT_DIR/screenshots" 2>/dev/null)" ]; then
+            echo "No screenshots found in $ARTIFACT_DIR/screenshots — skipping GIF creation"
+            exit 0
+          fi
+          node scripts/live-demo/create-gif.mjs "$ARTIFACT_DIR/screenshots" "$ARTIFACT_DIR/agentmemory-demo.gif"
 
       - name: Upload live demo artifacts
         if: always()
